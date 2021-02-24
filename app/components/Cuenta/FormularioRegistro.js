@@ -3,6 +3,8 @@ import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import { validarEmail} from "../../utils/validaciones"
 import { isEmpty, size } from "lodash";
+import * as firebase from "firebase";
+import { useNavigation } from "@react-navigation/native";
 
 
 
@@ -12,6 +14,7 @@ export default function FormularioRegistro(props) {
     const [ mostrarPassword , setMostrarPassword  ] = useState(false);
     const [mostrarRepeatPassword, setMostrarRepeatPassword] = useState(false);
     const [formData, setFormData] = useState(defaultFormValue());
+    const navigation = useNavigation();
 
     const onSubmit = () => {
         if( isEmpty(formData.email) || 
@@ -29,7 +32,15 @@ export default function FormularioRegistro(props) {
             toastRef.current.show("La contraseña debe ser mayor a 6 carácteres");
         }
         else {
-            console.log("OK");
+            firebase
+                .auth()
+                .createUserWithEmailAndPassword(formData.email, formData.password)
+                .then(response => {
+                    navigation.navigate("cuenta");
+                })
+                .catch(err => {
+                    toastRef.current.show("El email ya está en uso.");
+                });
         }
     };
 
