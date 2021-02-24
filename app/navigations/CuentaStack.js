@@ -16,7 +16,7 @@ export default function CuentaStack() {
              <Stack.Screen
                 name="ingreso"
                 component={Ingreso}
-                title="Iniciar sesión"
+                options={{ title : "Iniciar sesión" }}
              />
         </Stack.Navigator>
     )

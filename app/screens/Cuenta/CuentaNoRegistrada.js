@@ -1,8 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text, ScrollView, Image } from "react-native";
 import { Button } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
 
 export default function CuentaNoRegistrada(){
+
+    const navigation = useNavigation();
+
     return (
         <ScrollView centerContent={true} style={styles.viewBody}>
             <Image 
@@ -20,7 +24,7 @@ export default function CuentaNoRegistrada(){
                     buttonStyle={styles.btnPrimary}
                     containerStyle={styles.btnPrimaryContainer}
                     title="Ver perfil"
-                    onPress={ () => console.log("Click")}
+                    onPress={ () => navigation.navigate("ingreso")}
                 />
             </View>
         </ScrollView>
