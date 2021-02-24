@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useRef } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Toast from "react-native-easy-toast";
+
 
 import FormularioRegistro from "../../components/Cuenta/FormularioRegistro"
 
 export default function Registro() {
+    const toastRef = useRef();
 
     return (
         <KeyboardAwareScrollView>
@@ -14,8 +17,9 @@ export default function Registro() {
                 style={styles.logo}
             />
             <View style={styles.viewForm}>
-                <FormularioRegistro/>
+                <FormularioRegistro toastRef={toastRef} />
             </View>
+            <Toast ref={toastRef} position="center" opacity={0.9} />
         </KeyboardAwareScrollView>
     )
 }

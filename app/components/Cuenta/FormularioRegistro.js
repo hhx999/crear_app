@@ -1,15 +1,36 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
+import { validarEmail} from "../../utils/validaciones"
+import { isEmpty, size } from "lodash";
 
-export default function FormularioRegistro() {
+
+
+export default function FormularioRegistro(props) {
+    const { toastRef } = props;
 
     const [ mostrarPassword , setMostrarPassword  ] = useState(false);
     const [mostrarRepeatPassword, setMostrarRepeatPassword] = useState(false);
     const [formData, setFormData] = useState(defaultFormValue());
 
     const onSubmit = () => {
-        console.log(formData);
+        if( isEmpty(formData.email) || 
+            isEmpty(formData.password || 
+            isEmpty(formData.repeatPassword))
+            )
+        {
+            //console.log("Todos los campos son obligatorios");
+            toastRef.current.show("Todos los campos son obligatorios");
+        } else if(!validarEmail(formData.email)) {
+            toastRef.current.show("Email no válido");
+        } else if(formData.password !== formData.repeatPassword) {
+            toastRef.current.show("Las contraseñas deben ser iguales");
+        } else if (size(formData.password) < 6) {
+            toastRef.current.show("La contraseña debe ser mayor a 6 carácteres");
+        }
+        else {
+            console.log("OK");
+        }
     };
 
     const onChange = (e, type) => {
@@ -18,7 +39,6 @@ export default function FormularioRegistro() {
             [type] : e.nativeEvent.text
         });
     };
-
 
     return (
         <View style={styles.formContainer}>
