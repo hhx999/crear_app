@@ -8,7 +8,7 @@ export default function CuentaRegistrada() {
             <Text>
                 Cuenta Registrada
             </Text>
-            <Button title="Cerrar sesión" onPress={ () => firebase.auth().signOut } />
+            <Button title="Cerrar sesión" onPress={ () => firebase.auth().signOut() } />
         </View>
     )
 }

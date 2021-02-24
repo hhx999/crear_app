@@ -5,6 +5,7 @@ import { validarEmail} from "../../utils/validaciones"
 import { isEmpty, size } from "lodash";
 import * as firebase from "firebase";
 import { useNavigation } from "@react-navigation/native";
+import Loading from "../Loading";
 
 
 
@@ -14,6 +15,7 @@ export default function FormularioRegistro(props) {
     const [ mostrarPassword , setMostrarPassword  ] = useState(false);
     const [mostrarRepeatPassword, setMostrarRepeatPassword] = useState(false);
     const [formData, setFormData] = useState(defaultFormValue());
+    const [loading, setLoading] = useState(false);
     const navigation = useNavigation();
 
     const onSubmit = () => {
@@ -32,10 +34,12 @@ export default function FormularioRegistro(props) {
             toastRef.current.show("La contraseña debe ser mayor a 6 carácteres");
         }
         else {
+            setLoading(true);
             firebase
                 .auth()
                 .createUserWithEmailAndPassword(formData.email, formData.password)
                 .then(response => {
+                    setLoading(false);
                     navigation.navigate("cuenta");
                 })
                 .catch(err => {
@@ -101,6 +105,7 @@ export default function FormularioRegistro(props) {
                 buttonStyle={styles.btnRegistro}
                 onPress={onSubmit}
             />
+            <Loading isVisible={loading} text="Creando cuenta..."  />
         </View>
     )
 }
