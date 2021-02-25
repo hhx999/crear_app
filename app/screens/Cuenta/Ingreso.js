@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
 import { Divider } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import FormularioIngreso from "../../components/Cuenta/FormularioIngreso";
 
 export default function Ingreso() {
     return (
@@ -12,7 +13,7 @@ export default function Ingreso() {
                 style={styles.logo}
             />
             <View style={styles.viewContainer}>
-                <Text>Ingreso al sistema</Text>
+                <FormularioIngreso/>
                 <CrearCuenta/>
             </View>
             <Divider style={styles.divider}/>
