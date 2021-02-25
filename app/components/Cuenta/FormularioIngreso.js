@@ -3,14 +3,19 @@ import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import { isEmpty } from "lodash";
 import { validarEmail} from "../../utils/validaciones"
+import * as firebase from "firebase";
+import { useNavigation } from "@react-navigation/native";
+import Loading from "../Loading"
 
 
 export default function FormularioIngreso (props) {
 
     const { toastRef } = props;
+    const navigation = useNavigation();
 
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const [formData, setFormData] = useState(defaultFormValue);
+    const [loading, setLoading] = useState(false)
 
     const onChange = (e , type) => {
         setFormData({
@@ -27,7 +32,18 @@ export default function FormularioIngreso (props) {
         } else if (!validarEmail(formData.email)) {
             toastRef.current.show("El email no es válido");
         } else {
-            console.log("OK");
+            setLoading(true);
+            firebase
+                .auth()
+                .signInWithEmailAndPassword(formData.email,formData.password)
+                .then( () => {
+                    setLoading(false);
+                    navigation.navigate("cuenta");  
+                })
+                .catch( () => {
+                    setLoading(false);
+                    toastRef.current.show("Contraseña incorrecta");
+                })
         }
     }
 
@@ -66,6 +82,7 @@ export default function FormularioIngreso (props) {
                 buttonStyle={styles.btnIngreso}
                 onPress={onSubmit}
             />
+            <Loading isVisible={loading} text="Iniciando sesión..."/>
         </View>
     )
 }
