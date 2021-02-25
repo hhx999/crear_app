@@ -5,6 +5,8 @@ import { Button } from "react-native-elements";
 import Toast  from "react-native-easy-toast";
 import Loading from "../../components/Loading";
 import InfoUsuario from "../../components/Cuenta/InfoUsuario"
+import OpcionesCuenta from "../../components/Cuenta/OpcionesCuenta"
+
 
 export default function CuentaRegistrada() {
     const [userInfo, setUserInfo] = useState(null);
@@ -27,7 +29,10 @@ export default function CuentaRegistrada() {
                             setLoading={setLoading}
                             setLoadingText={setLoadingText}
                             />}
-            <Text>Opciones de la cuenta</Text>
+            
+            <OpcionesCuenta userInfo={userInfo} toastRef={toastRef} />
+            
+
             <Button
                 title="Cerrar sesión"
                 buttonStyle={styles.btnCerrarSesion}
