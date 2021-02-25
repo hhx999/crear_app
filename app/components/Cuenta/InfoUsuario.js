@@ -1,9 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Avatar } from "react-native-elements";
+import DefaultAvatar from "../../../assets/img/avatar-default.jpg"
 
 export default function InfoUsuario(props) {
-  const { userInfo } = props;
+  const { userInfo: { photoUrl, displayName, email }, 
+        } = props;
+
   return (
     <View style={styles.viewUsuarioInfo}>
       <Avatar
@@ -11,13 +14,14 @@ export default function InfoUsuario(props) {
         size="large"
         showEditButton
         containerStyle={styles.usuarioInfoAvatar}
+        source={ photoUrl ? {uri : photoUrl} : DefaultAvatar }
       />
       <View>
           <Text style={styles.displayName}>
-              Usuario Test
+              {displayName ? displayName : "Anonimous"}
           </Text>
           <Text>
-              mail@mail.com
+              {email ? email : "Cuenta con red social"}
           </Text>
       </View>
     </View>
