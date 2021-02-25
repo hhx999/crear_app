@@ -12,6 +12,7 @@ export default function CuentaRegistrada() {
     const [userInfo, setUserInfo] = useState(null);
     const [loading, setLoading] = useState(false);
     const [loadingText, setLoadingText] = useState("");
+    const [recargarUserInfo, setRecargarUserInfo] = useState(false);
     const toastRef = useRef();
 
     useEffect( () => {
@@ -19,7 +20,8 @@ export default function CuentaRegistrada() {
             const user = await firebase.auth().currentUser;
             setUserInfo(user);
         }) ();
-    }, []);
+        setRecargarUserInfo(false);
+    }, [recargarUserInfo]);
 
     return (
         <View style={styles.viewUserInfo}>
@@ -30,7 +32,7 @@ export default function CuentaRegistrada() {
                             setLoadingText={setLoadingText}
                             />}
             
-            <OpcionesCuenta userInfo={userInfo} toastRef={toastRef} />
+            <OpcionesCuenta userInfo={userInfo} toastRef={toastRef} setRecargarUserInfo={setRecargarUserInfo} />
             
 
             <Button
