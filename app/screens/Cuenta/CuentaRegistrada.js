@@ -21,7 +21,12 @@ export default function CuentaRegistrada() {
 
     return (
         <View style={styles.viewUserInfo}>
-            {userInfo && <InfoUsuario userInfo={userInfo} />}
+            {userInfo && <InfoUsuario 
+                            userInfo={userInfo} 
+                            toastRef={toastRef} 
+                            setLoading={setLoading}
+                            setLoadingText={setLoadingText}
+                            />}
             <Text>Opciones de la cuenta</Text>
             <Button
                 title="Cerrar sesión"
