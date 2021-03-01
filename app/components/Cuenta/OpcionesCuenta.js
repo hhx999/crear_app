@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ListItem } from "react-native-elements";
 import { map } from "lodash";
 import Modal from "../Modal";
+
 import CambiarDisplayNameForm from "../../components/Cuenta/cambiarDisplayNameForm";
+import CambiarEmailForm from "../../components/Cuenta/CambiarEmailForm";
+import CambiarPasswordForm from "../../components/Cuenta/CambiarPasswordForm";
 
 export default function OpcionesCuenta(props) {
     
@@ -26,17 +29,21 @@ export default function OpcionesCuenta(props) {
                 break;
             case "email":
                 setRenderComponente(
-                    <Text>
-                        Cambiando email
-                    </Text>
+                    <CambiarEmailForm
+                        email={userInfo.email}
+                        setMostrarModal={setMostrarModal}
+                        toastRef={toastRef}
+                        setRecargarUserInfo={setRecargarUserInfo}
+                    />
                 );
                 setMostrarModal(true);
             break;
             case "password":
                 setRenderComponente(
-                    <Text>
-                        Cambiando password
-                    </Text>
+                    <CambiarPasswordForm
+                        setMostrarModal={setMostrarModal}
+                        toastRef={toastRef}
+                    />
                 );
                 setMostrarModal(true);
             break;
