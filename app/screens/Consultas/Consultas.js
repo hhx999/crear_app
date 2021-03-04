@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useCallback} from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Icon } from "react-native-elements";
+import { useFocusEffect } from "@react-navigation/native";
 import { firebaseApp } from "../../utils/firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -11,10 +12,12 @@ const db = firebase.firestore(firebaseApp);
 
 export default function Consultas(props) {
     const { navigation } = props;
+
     const [usuario, setUsuario] = useState(null)
     const [consultas, setConsultas] = useState([]);
     const [totalConsultas, setTotalConsultas] = useState(0);
     const [startConsultas, setStartConsultas] = useState(null);
+    const [cargando, setCargando] = useState(false);
     const limitConsultas = 10;
 
     console.log(consultas);
@@ -26,36 +29,64 @@ export default function Consultas(props) {
             });
     }, []);
 
-    
-    useEffect(() => {
-        db.collection("consultas")
-        .get()
-        .then((snap) => {
-            setTotalConsultas(snap.size);
-        });
-        
-        const resultConsultas = [];
+    useFocusEffect(
+        useCallback(() => {
+            db.collection("consultas")
+            .get()
+            .then((snap) => {
+                setTotalConsultas(snap.size);
+            });
+            
+            const resultConsultas = [];
 
-        db.collection("consultas")
-            .orderBy("createAt", "desc")
+            db.collection("consultas")
+                .orderBy("createAt", "desc")
+                .limit(limitConsultas)
+                .get()
+                .then((res) => {
+                    setStartConsultas(res.docs[res.docs.length - 1]);
+                    res.forEach((doc) => {
+                        const consulta = doc.data();
+                        consulta.id = doc.id;
+                        resultConsultas.push(consulta);   
+                    });
+                    setConsultas(resultConsultas);
+                });
+        }, [])
+    );
+    
+    
+
+    const handleLoadMore = () => {
+        const resultConsultas = [];
+        consultas.length < totalConsultas && setCargando(true);
+        db.collection("consultas").orderBy("createdAt","desc")
+            .startAfter(startConsultas.data().createAt)
             .limit(limitConsultas)
             .get()
             .then((res) => {
-                setStartConsultas(res.docs[res.docs.length - 1]);
-                res.forEach((doc) => {
+                if(res.docs.length > 0) {
+                    setStartConsultas(res.docs[res.docs.length - 1])
+                } else {
+                    setCargando(false);
+                }
+
+                res.forEach(() => {
                     const consulta = doc.data();
                     consulta.id = doc.id;
-                    resultConsultas.push(consulta);   
+                    resultConsultas.push(consulta);
                 });
-                setConsultas(resultConsultas);
-            });
 
-    }, [])
+                setConsultas([...consultas, ...resultConsultas])
+            })
+    }
 
     return (
         <View style={styles.viewBody}>
             <ListaConsultas 
                 consultas={consultas}
+                handleLoadMore={handleLoadMore}
+                cargando={cargando}
             />
             { usuario && (
                 <Icon

@@ -1,19 +1,23 @@
 import React from 'react'
-import { StyleSheet, Text, View, FlatList, ActivityIndicator, TouchableOpacity, Image } from 'react-native'
-import { } from "react-native-elements";
+import { StyleSheet, Text, View, FlatList, ActivityIndicator, TouchableOpacity} from 'react-native'
+import { Image } from "react-native-elements";
 import {size} from "lodash";
-import { Touchable } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 
 export default function ListaConsultas(props) {
-    const { consultas } = props;
+    const { consultas, handleLoadMore, cargando } = props;
+    const navigation = useNavigation();
 
     return (
         <View>
             { size(consultas) > 0  ? (
                 <FlatList 
                     data={consultas}
-                    renderItem={(consulta) => <Consulta consulta={consulta} />}
+                    renderItem={(consulta) => <Consulta consulta={consulta} navigation={navigation} />}
                     keyExtractor={(item,index) => index.toString()}
+                    onEndReachedThreshold={0.5}
+                    onEndReached={handleLoadMore}
+                    ListFooterComponent={<FooterList cargando={cargando} />}
                 />
             ) : (
                 <View style={styles.loaderConsultas}>
@@ -54,10 +58,34 @@ function Consulta(props) {
     )
 }
 
+function FooterList(props) {
+    const { cargando } = props;
+
+    if (cargando) {
+        return (
+            <View style={styles.loaderConsultas}>
+                <ActivityIndicator size="large" />
+            </View>
+        )
+    } else {
+        return (
+            <View style={styles.notFoundConsultas}>
+                <Text>No quedan consultas por cargar</Text>
+            </View>
+        )
+    }
+
+}
+
 const styles = StyleSheet.create({
     loaderConsultas : {
         marginTop: 10,
         marginBottom: 10,
+        alignItems: "center",
+    },
+    notFoundConsultas :{
+        marginTop: 10,
+        marginBottom: 20,
         alignItems: "center",
     },
     viewConsulta : {

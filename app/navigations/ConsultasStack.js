@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Consultas from "../screens/Consultas/Consultas";
 import AgregarConsulta from "../screens/Consultas/AgregarConsulta";
+import Consulta from "../screens/Consultas/Consulta";
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,10 @@ export default function ConsultasStack () {
                 name="agregar-consulta"
                 component={AgregarConsulta}
                 options={{title : "Enviar nueva consulta"}}
+            />
+            <Stack.Screen 
+                name="consulta"
+                component={Consulta}
             />
         </Stack.Navigator>
     )
