@@ -21,7 +21,7 @@ export default function AgregarConsulta(props) {
                     titulo : nombreConsulta,
                     descripcion : descripcionConsulta,
                     createAt: new Date(),
-                    createAt: firebase.auth().currentUser.uid,
+                    createBy: firebase.auth().currentUser.uid,
                 })
                 .then(() => {
                     console.log("OK");
