@@ -27,7 +27,6 @@ export default function Consulta(props) {
                 const data = res.data();
                 data.id = res.id;
                 setConsulta(data);
-                setRating(data.rating);
                 db.collection('respuestas')
                 .doc(res.data().idRespuesta)
                 .get()
@@ -35,6 +34,7 @@ export default function Consulta(props) {
                     const dataRes = res.data();
                     dataRes.id = res.id;
                     setRespuesta(dataRes);
+                    setRating(dataRes.rating);
                 });
             });
         
@@ -46,7 +46,6 @@ export default function Consulta(props) {
             <TitleConsulta
                 titulo={consulta.titulo}
                 descripcion={consulta.descripcion}
-                rating={consulta.rating}
             ></TitleConsulta>
             <Text style={{color: "#76b72a",paddingBottom:20}}>Agencia CREAR Bariloche</Text>
             <Text style={{fontWeight: "bold"}}>Respuesta:</Text>
@@ -59,7 +58,7 @@ export default function Consulta(props) {
                         <Rating
                                 style={styles.rating}
                                 imageSize={40}
-                                startingValue={parseFloat(consulta.rating)}
+                                startingValue={parseFloat(respuesta.rating)}
                         ></Rating>
                     </View>
                     <View style={{alignItems: "center"}}>
@@ -76,7 +75,7 @@ export default function Consulta(props) {
 }
 
 function TitleConsulta(props) {
-    const {titulo, descripcion, rating} = props;
+    const {titulo, descripcion} = props;
     
     return (
         <View style={styles.viewTitleConsulta}>

@@ -48,7 +48,6 @@ export default function AgregarConsulta(props) {
                     idAgencia: agencia.id,
                     titulo : nombreConsulta,
                     descripcion : descripcionConsulta,
-                    rating: 0,
                     createAt: new Date(),
                 })
                 .then(() => {
