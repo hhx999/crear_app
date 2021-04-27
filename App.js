@@ -7,6 +7,7 @@ import * as firebase from "firebase";
 import { decode, encode } from "base-64";
 
 LogBox.ignoreLogs(["Setting a timer"]);
+console.disableYellowBox = true;
 
 if(!global.btoa) global.btoa = encode;
 if(!global.atob) global.atob = decode;

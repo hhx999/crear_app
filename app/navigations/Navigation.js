@@ -7,6 +7,7 @@ import ConsultasStack from "../navigations/ConsultasStack";
 import NovedadesStack from "../navigations/NovedadesStack";
 import BuscarStack from "../navigations/BuscarStack";
 import CuentaStack from "../navigations/CuentaStack";
+import InicioStack from "../navigations/InicioStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,7 +15,7 @@ export default function Navigation() {
     return (
         <NavigationContainer>
             <Tab.Navigator
-                initialRouteName="cuenta"
+                initialRouteName="inicio"
                 tabBarOptions={{
                     inactiveTintColor : "#646464",
                     activeTintColor : "#00a680"
@@ -24,6 +25,11 @@ export default function Navigation() {
                 })}
             >
                 <Tab.Screen 
+                    name="inicio" 
+                    component={InicioStack} 
+                    options={{ title : "Inicio" }}
+                    />
+                <Tab.Screen 
                     name="consultas" 
                     component={ConsultasStack} 
                     options={{ title : "Consultas" }}
@@ -32,11 +38,6 @@ export default function Navigation() {
                     name="novedades" 
                     component={NovedadesStack} 
                     options={{ title : "Novedades" }}
-                    />
-                <Tab.Screen 
-                    name="buscar" 
-                    component={BuscarStack} 
-                    options={{ title : "Buscar" }}
                     />
                 <Tab.Screen 
                     name="cuenta" 
@@ -52,14 +53,14 @@ function screenOptions( route, color) {
     let iconName;
 
     switch (route.name) {
+        case "inicio":
+            iconName="home"
+            break;
         case "consultas":
             iconName="comment-question"
             break;
         case "novedades":
             iconName="newspaper-variant-multiple-outline"
-            break;
-        case "buscar":
-            iconName="magnify"
             break;
         case "cuenta":
             iconName="account"

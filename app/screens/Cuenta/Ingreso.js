@@ -1,14 +1,19 @@
-import React, {useRef} from "react";
-import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
+import React, {useRef, useState} from "react";
+import { StyleSheet, View, Text, Image, ScrollView, Button } from "react-native";
 import { Divider } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-easy-toast";
+import * as firebase from "firebase";
+import { firebaseApp } from "../../utils/firebase";
+const db = firebase.firestore(firebaseApp);
 
 import FormularioIngreso from "../../components/Cuenta/FormularioIngreso";
+import RegistroGoogle from "../../components/Cuenta/RegistroGoogle";
 
 export default function Ingreso() {
     const toastRef = useRef();
-
+    const navigation = useNavigation();
+    
     return (
         <ScrollView>
             <Image
@@ -23,6 +28,7 @@ export default function Ingreso() {
             <Divider style={styles.divider}/>
             <Text>Ingreso con redes sociales</Text>
             <Toast ref={toastRef} position="center" opacity={0.9} />
+            <RegistroGoogle/>
         </ScrollView>
     )
 }

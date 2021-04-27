@@ -4,6 +4,7 @@ import { Image } from "react-native-elements";
 import {size} from "lodash";
 import { useNavigation } from "@react-navigation/native";
 
+
 export default function ListaConsultas(props) {
     const { consultas, handleLoadMore, cargando } = props;
     const navigation = useNavigation();
@@ -30,12 +31,14 @@ export default function ListaConsultas(props) {
 }
 
 function Consulta(props) {
-    const {consulta} = props;
-    const { titulo, descripcion } = consulta.item;
-    console.log(consulta);
+    const {consulta, navigation} = props;
+    const { titulo, descripcion, idRespuesta } = consulta.item;
 
-    const goConsulta = ( ) => {
-        console.log("Hola");
+    const goConsulta = () => {
+        navigation.navigate("consulta", {
+            id: consulta.item.id,
+            name: titulo
+        });
     }
 
     return (
@@ -52,6 +55,7 @@ function Consulta(props) {
                 <View>
                     <Text style={styles.tituloConsulta}>{titulo}</Text>
                     <Text style={styles.descripcionConsulta}>{descripcion.substr(0, 60)}...</Text>
+                    {idRespuesta ? (<Text style={{color: "#76b72a"}}>Respondido</Text>) : <Text style={{color: "#ccc"}}>En espera</Text>}
                 </View>
             </View>
         </TouchableOpacity>

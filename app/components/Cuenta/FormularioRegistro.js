@@ -4,9 +4,10 @@ import { Input, Icon, Button } from "react-native-elements";
 import { validarEmail} from "../../utils/validaciones"
 import { isEmpty, size } from "lodash";
 import * as firebase from "firebase";
+import { firebaseApp } from "../../utils/firebase";
 import { useNavigation } from "@react-navigation/native";
 import Loading from "../Loading";
-
+const db = firebase.firestore(firebaseApp);
 
 
 export default function FormularioRegistro(props) {
@@ -38,22 +39,39 @@ export default function FormularioRegistro(props) {
             firebase
                 .auth()
                 .createUserWithEmailAndPassword(formData.email, formData.password)
-                .then(response => {
-                    setLoading(false);
-                    navigation.navigate("cuenta");
+                .then(res => {
+                    console.log("Creando usuario en tabla...");
+                    addInfoUser(res);
                 })
                 .catch(err => {
-                    toastRef.current.show("El email ya está en uso.");
+                    setLoading(false);
+                    toastRef.current.show("El email ya está en uso."+err);
                 });
         }
     };
-
     const onChange = (e, type) => {
         setFormData({ 
             ...formData,
             [type] : e.nativeEvent.text
         });
     };
+
+    const addInfoUser = async(data) => {
+        db.collection("users").doc(data.user.uid)
+            .set({
+                uid: data.user.uid,
+                email: data.user.email,
+                rol: 'usuario'
+            })
+            .then(() => {
+                console.log("OK");
+                setLoading(false);
+                navigation.navigate("cuenta");
+            }).catch((e) => {
+                setLoading(false);
+                toastRef.current.show("Error al agregar el usuario a la tabla.\n");
+            });
+    }
 
     return (
         <View style={styles.formContainer}>

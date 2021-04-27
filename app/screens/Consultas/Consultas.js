@@ -26,7 +26,9 @@ export default function Consultas(props) {
 
   useFocusEffect(
     useCallback(() => {
+      console.log(firebase.auth().currentUser.uid);
       db.collection("consultas")
+        .where('uid','==',firebase.auth().currentUser.uid)
         .get()
         .then((snap) => {
           setTotalConsultas(snap.size);
@@ -35,7 +37,7 @@ export default function Consultas(props) {
       const resultConsultas = [];
 
       db.collection("consultas")
-        .orderBy("createAt", "desc")
+        .where('uid','==',firebase.auth().currentUser.uid)
         .limit(limitConsultas)
         .get()
         .then((response) => {
@@ -56,6 +58,7 @@ export default function Consultas(props) {
     consultas.length < totalConsultas && setIsLoading(true);
 
     db.collection("Consultas")
+      .where('uid','==',firebase.auth().currentUser.uid)
       .orderBy("createAt", "desc")
       .startAfter(startConsultas.data().createAt)
       .limit(limitConsultas)
@@ -86,14 +89,15 @@ export default function Consultas(props) {
       />
 
       {user && (
-        <Icon
-          reverse
-          type="material-community"
-          name="plus"
-          color="#00a680"
-          containerStyle={styles.btnContainer}
-          onPress={() => navigation.navigate("agregar-consulta")}
-        />
+        <View style={styles.btnContainer}>
+          <Text
+            color="#00a680"
+            style={{backgroundColor: "#0074bb", color: "white", paddingVertical: 20,
+            paddingHorizontal: 20, borderRadius: 40}}
+            onPress={() => navigation.navigate("agregar-consulta")}
+          >Envianos tu consulta</Text>
+
+        </View>
       )}
     </View>
   );

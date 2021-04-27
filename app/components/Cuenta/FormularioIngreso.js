@@ -22,8 +22,6 @@ export default function FormularioIngreso (props) {
             ...formData,
             [type] : e.nativeEvent.text
         })
-        console.log(e.nativeEvent.text);
-        console.log(type);
     }
 
     const onSubmit = () => {
