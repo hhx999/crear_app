@@ -1,33 +1,81 @@
 import React from "react";
-import { StyleSheet, View, Text, ScrollView, Image } from "react-native";
-import { Button } from "react-native-elements";
+import { StyleSheet, View, ScrollView, Image, TouchableHighlight } from "react-native";
+import { Button, Card, Text, Divider } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+
+import moment from 'moment';
+import 'moment/locale/es';
+
+const defaultJSONData = {
+	source: {
+		id: 'crear-rn',
+		name: 'Agencia Provincial CREAR'
+	},
+	author: null,
+	title:
+		"El CREAR continúa impulsando el crecimiento de los Parques Industriales en la Provincia.",
+	description:
+		'El CREAR continúa apoyando al sector empresarial y a las Pymes rionegrinas, con el avance y reorganización de Parques Industriales en distintos puntos de la Provincia.',
+	url:
+		'https://crear.rionegro.gov.ar/?contID=67842',
+	urlToImage:
+		'https://crear.rionegro.gov.ar/download/images/medio/00056294.jpeg',
+	publishedAt: '2021-04-28T07:52:57Z',
+	content:
+		'El CREAR continúa apoyando al sector empresarial y a las Pymes rionegrinas, con el avance y reorganización de Parques Industriales en distintos puntos de la Provincia… [+1410 chars]'
+};
 
 export default function Novedades() {
 
     const navigation = useNavigation();
+    moment().locale('es');
+    const time = moment(defaultJSONData.publishedAt || moment.now()).fromNow();
 
     return (
-        <ScrollView centerContent={true} style={styles.viewBody}>
-            <Image 
-                source={require("../../assets/img/news.png")}
-                resizeMode="contain"
-                style={styles.image}
-            />
-            <Text style={styles.title}>Dentro de poco estaremos subiendo las novedades</Text>
-            <Text style={styles.description}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </Text>
-            <View style={styles.btnPrimaryView}>
-                <Button 
-                    buttonStyle={styles.btnPrimary}
-                    containerStyle={styles.btnPrimaryContainer}
-                    title="Envianos tu consulta"
-                    onPress={ () => navigation.navigate("consultas")}
-                />
-            </View>
-        </ScrollView>
+        <TouchableHighlight>
+				<Card
+					featuredTitle={defaultJSONData.title}
+					featuredTitleStyle={{
+						marginHorizontal: 5,
+						textShadowColor: '#00000f',
+						textShadowOffset: { width: 3, height: 3 },
+						textShadowRadius: 3
+					}}
+					image={{
+						uri:
+							'https://crear.rionegro.gov.ar/download/images/medio/00056294.jpeg'
+					}}
+				>
+					<Text style={{ marginBottom: 10 }}>
+						{defaultJSONData.description || 'Leer más...'}
+					</Text>
+					<Divider style={{ backgroundColor: '#dfe6e9' }} />
+					<View
+						style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+					>
+						<Text
+							style={{
+								margin: 5,
+								fontStyle: 'italic',
+								color: '#b2bec3',
+								fontSize: 10
+							}}
+						>
+							{defaultJSONData.source.name.toUpperCase()}
+						</Text>
+						<Text
+							style={{
+								margin: 5,
+								fontStyle: 'italic',
+								color: '#b2bec3',
+								fontSize: 10
+							}}
+						>
+							{time}
+						</Text>
+					</View>
+				</Card>
+			</TouchableHighlight>
     );
 }
 
