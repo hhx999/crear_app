@@ -15,11 +15,11 @@ export default function Consulta(props) {
     const [consulta, setConsulta] = useState(null);
     const [respuesta, setRespuesta] = useState({})
     const [rating, setRating] = useState(0);
-    const [review, setReview] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [inicioRating, setInicioRating] = useState(0)
 
     const toastRef = useRef();
-    navigation.setOptions({title : name});
+    navigation.setOptions({title : name})
 
     useEffect(() => {
         db.collection('consultas')
@@ -36,7 +36,7 @@ export default function Consulta(props) {
                     const dataRes = res.data();
                     dataRes.id = res.id;
                     setRespuesta(dataRes);
-                    setReview(dataRes.rating);
+                    setInicioRating(dataRes.rating);
                 });
             });
         
@@ -59,10 +59,6 @@ export default function Consulta(props) {
         }
     }
 
-    const cambiarReview = (rating) => {
-        setRating(rating);
-    }
-
     if(consulta == null) return <Loading isVisible={true} text='Cargando consulta...'></Loading>
     return (
         <View style={styles.viewBody}>
@@ -81,8 +77,8 @@ export default function Consulta(props) {
                         <Rating
                                 style={styles.rating}
                                 imageSize={40}
-                                startingValue={parseFloat(review)}
-                                onFinishRating={cambiarReview}
+                                startingValue={inicioRating}
+                                onFinishRating={val => setRating(val)}
                         ></Rating>
                     </View>
                     <View style={{alignItems: "center"}}>
